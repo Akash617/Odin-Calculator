@@ -11,7 +11,7 @@ function mul() {
 }
 
 function div() {
-    
+
 }
 
 function resetInput() {
@@ -30,6 +30,7 @@ function displayMain(value) {
 }
 
 function inputNum(value) {
+    console.log(`inputting ${value}`);
     if (reset) {
         number1 = value;
     } else {
