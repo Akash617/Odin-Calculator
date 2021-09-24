@@ -21,14 +21,16 @@ function div() {
 }
 
 function resetInput() {
-    result, number2 = 0;
+    result = number2 = 0;
     firstOp = false;
     displayMain(number1);
 }
 
 function resetAll() {
-    number1, number2, result = 0;
+    number1 = number2 = result = 0;
+    console.log(number1);
     firstOp = true;
+    displayMain('');
 }
 
 function displayMain(value) {
@@ -49,8 +51,13 @@ function inputNum(value) {
     }
 }
 
-function operation() {
-
+function display2(operation) {
+    if (operation === "=" && !lastOpEq) {
+        upperDisplay.innerHTML += ` ${number2} =`;
+        lastOpEq = true;
+    } else {
+        upperDisplay.innerHTML = `${number1} ${operation}`;
+    }
 }
 
 function run() {
@@ -77,10 +84,12 @@ let number1Tmp = 0;
 let number2 = 0;
 let number2Tmp = 0;
 let result = 0;
+let lastOpEq = false;  // To stop '=' from displaying over and over again
 let firstOp = true; //Used in case the actual value of num1 is -1 because of the resetInput() function
 
 let addBit, subBit, mulBit, divBit = false;
 
+let upperDisplay = document.querySelector(".display2");
 let resDisplay = document.querySelector(".res-display");
 
 let inNum0 = document.querySelector(".num0");
@@ -118,23 +127,36 @@ inNum8.addEventListener('click', function() {inputNum(8)});
 inNum9.addEventListener('click', function() {inputNum(9)});
 
 opAdd.addEventListener('click' , function() {
+    lastOpEq = false;
+    display2('+');
     run();
     addBit = true;
 });
 
 opSub.addEventListener('click' , function() {
+    lastOpEq = false;
+    display2('-');
     run();
     subBit = true;
 });
 
 opMul.addEventListener('click' , function() {
+    lastOpEq = false;
+    display2('x');
     run();
     mulBit = true;
 });
 
 opDiv.addEventListener('click' , function() {
+    lastOpEq = false;
+    display2('/');
     run();
     divBit = true;
 });
 
-opEq.addEventListener('click' , run);
+opEq.addEventListener('click' , function() {
+    display2('=');
+    run();
+});
+
+exClear.addEventListener('click', resetAll);
