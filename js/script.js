@@ -13,10 +13,14 @@ function sub() {
 function mul() {
     result = number1*number2;
     number1 = result;
+    decimalPlaces1 += decimalPlaces2;
     resetInput();
 }
 
 function div() {
+    result = number1/number2;
+    number1 = result;
+    decimalPlaces1 = 0;
     resetInput();
 }
 
@@ -24,15 +28,17 @@ function resetInput() {
     result = number2 = 0;
     firstOp = false;
     dot = false;
-    decimalPlaces = 1;
-    displayMain(number1);
+    displayMain((number1)/(10**decimalPlaces1));
+    decimalPlaces2 = 0;
 }
 
 function resetAll() {
     number1 = number2 = result = 0;
     firstOp = true;
+    dot = false;
     displayMain('');
     upperDisplay.innerHTML = "";
+    decimalPlaces1 = decimalPlaces2 = 0;
 }
 
 function displayMain(value) {
@@ -57,31 +63,50 @@ function inputNum(value) {
 
 function inputDecimal(value) {
     if (firstOp) {
+        decimalPlaces1++;
         number1Tmp = number1;
-        number1 = ((number1Tmp*(10**decimalPlaces)) + value)/(10**decimalPlaces);
+        number1 = (number1Tmp*(10**decimalPlaces1)) + value;
         number1Tmp = 0;
-        decimalPlaces++;
-        displayMain(number1);
+        displayMain((number1)/(10**decimalPlaces1));
     } else {
+        decimalPlaces2++;
         number2Tmp = number2;
-        number2 = ((number2Tmp*(10**decimalPlaces)) + value)/(10**decimalPlaces);
+        number2 = (number2Tmp*(10**decimalPlaces2)) + value;
         number2Tmp = 0;
-        decimalPlaces++;
-        displayMain(number2);
+        displayMain((number2)/(10**decimalPlaces2));
+    }
+}
+
+function percentInput() {
+    if (firstOp) {
+        number1 = number1/100;
+        displayMain((number2/(10**decimalPlaces1)));
+    } else {
+        number2 = number2/100;
+        displayMain((number2/(10**decimalPlaces2)));
+    }
+}
+
+function plusMin() {
+    if (firstOp) {
+        number1 = number1*-1;
+        displayMain((number1/(10**decimalPlaces1)));
+    } else {
+        number2 = number2*-1;
+        displayMain((number2/(10**decimalPlaces2)));
     }
 }
 
 function display2(operation) {
     if (operation === "=" && !lastOpEq) {
-        upperDisplay.innerHTML += ` ${number2} =`;
+        upperDisplay.innerHTML += ` ${(number2/(10**decimalPlaces2))} =`;
         lastOpEq = true;
     } else {
-        upperDisplay.innerHTML = `${number1} ${operation}`;
+        upperDisplay.innerHTML = `${(number1/(10**decimalPlaces1))} ${operation}`;
     }
 }
 
 function run() {
-    
     if (addBit) {
         add();
         addBit = false;
@@ -104,7 +129,8 @@ let number1Tmp = 0;
 let number2 = 0;
 let number2Tmp = 0;
 let result = 0;
-let decimalPlaces = 1;
+let decimalPlaces1 = 0;
+let decimalPlaces2 = 0;
 let dot = false;
 let lastOpEq = false;  // To stop '=' from displaying over and over again
 let firstOp = true; //Used in case the actual value of num1 is -1 because of the resetInput() function
@@ -183,3 +209,5 @@ opEq.addEventListener('click' , function() {
 
 exClear.addEventListener('click', resetAll);
 exDot.addEventListener('click', function() {dot = true});
+exPercent.addEventListener('click', percentInput);
+exPlusMin.addEventListener('click', plusMin);
