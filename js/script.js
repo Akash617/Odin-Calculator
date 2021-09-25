@@ -23,14 +23,16 @@ function div() {
 function resetInput() {
     result = number2 = 0;
     firstOp = false;
+    dot = false;
+    decimalPlaces = 1;
     displayMain(number1);
 }
 
 function resetAll() {
     number1 = number2 = result = 0;
-    console.log(number1);
     firstOp = true;
     displayMain('');
+    upperDisplay.innerHTML = "";
 }
 
 function displayMain(value) {
@@ -38,7 +40,9 @@ function displayMain(value) {
 }
 
 function inputNum(value) {
-    if (firstOp) {
+    if (dot) {
+        inputDecimal(value);
+    } else if (firstOp) {
         number1Tmp = number1;
         number1 = (number1Tmp*10) + value;
         number1Tmp = 0;
@@ -47,6 +51,22 @@ function inputNum(value) {
         number2Tmp = number2;
         number2 = (number2Tmp*10) + value;
         number2Tmp = 0;
+        displayMain(number2);
+    }
+}
+
+function inputDecimal(value) {
+    if (firstOp) {
+        number1Tmp = number1;
+        number1 = ((number1Tmp*(10**decimalPlaces)) + value)/(10**decimalPlaces);
+        number1Tmp = 0;
+        decimalPlaces++;
+        displayMain(number1);
+    } else {
+        number2Tmp = number2;
+        number2 = ((number2Tmp*(10**decimalPlaces)) + value)/(10**decimalPlaces);
+        number2Tmp = 0;
+        decimalPlaces++;
         displayMain(number2);
     }
 }
@@ -84,6 +104,8 @@ let number1Tmp = 0;
 let number2 = 0;
 let number2Tmp = 0;
 let result = 0;
+let decimalPlaces = 1;
+let dot = false;
 let lastOpEq = false;  // To stop '=' from displaying over and over again
 let firstOp = true; //Used in case the actual value of num1 is -1 because of the resetInput() function
 
@@ -128,29 +150,29 @@ inNum9.addEventListener('click', function() {inputNum(9)});
 
 opAdd.addEventListener('click' , function() {
     lastOpEq = false;
-    display2('+');
     run();
+    display2('+');
     addBit = true;
 });
 
 opSub.addEventListener('click' , function() {
     lastOpEq = false;
-    display2('-');
     run();
+    display2('-');
     subBit = true;
 });
 
 opMul.addEventListener('click' , function() {
     lastOpEq = false;
-    display2('x');
     run();
+    display2('x');
     mulBit = true;
 });
 
 opDiv.addEventListener('click' , function() {
     lastOpEq = false;
-    display2('/');
     run();
+    display2('/');
     divBit = true;
 });
 
@@ -160,3 +182,4 @@ opEq.addEventListener('click' , function() {
 });
 
 exClear.addEventListener('click', resetAll);
+exDot.addEventListener('click', function() {dot = true});
