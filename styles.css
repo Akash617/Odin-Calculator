@@ -12,8 +12,9 @@
     grid-template-columns: repeat(5, 90px);
     width: 550px;
     height: 650px;
+    padding-top: 30px;
+    margin-top: 40px;
     justify-content: center;
-    padding-top: 50px;
     background: slategray;
     grid-column-gap: 10px;
     grid-row-gap: 15px;
@@ -32,7 +33,14 @@
     grid-row: span 1;
     text-align: right;
     line-height: 50px;
-    font-size: 30px;
+    font-size: 40px;
+
+    /* Make result selectable */
+    -webkit-user-select: text; /* Safari */        
+    -moz-user-select: text; /* Firefox */
+    -ms-user-select: text; /* IE10+/Edge */
+    user-select: text; /* Standard */
+
 }
 
 .container > * {
@@ -40,7 +48,19 @@
     background: darkgray;
     text-align: center;
     vertical-align: middle;
-    line-height: 100px;
+    line-height: 110px;
+    font-size: 20px;
+
+    /* Make keys unselectable */
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.container .dot {
+    font-size: 40px;
+    line-height: 90px;
 }
 
 .clickable:hover {
